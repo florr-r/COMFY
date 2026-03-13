@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMFY - Community Smart Air Monitoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-50: #f0faf4;
+      --green-100: #dcf5e7;
+      --green-200: #b9ead0;
+      --green-300: #87d9b0;
+      --green-400: #4ec28a;
+      --green-500: #2da86d;
+      --green-600: #1f8855;
+      --green-700: #1a6e45;
+      --green-800: #185739;
+      --green-900: #154830;
+      --sage: #6b8f71;
+      --mint: #a8d5b5;
+      --cream: #f8fdf9;
+      --charcoal: #1c2b22;
+      --text-dark: #1a2e1f;
+      --text-mid: #3d5c44;
+      --text-light: #6b8f71;
+      --white: #ffffff;
+      --shadow-green: 0 20px 60px rgba(45, 168, 109, 0.15);
+      --shadow-card: 0 8px 32px rgba(26, 46, 31, 0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ============ PAGE SECTIONS ============ */
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    /* ============ HERO BANNER ============ */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--green-700) 0%, var(--green-500) 50%, var(--green-400) 100%);
+      padding: 60px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    }
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 0;
+      height: 60px;
+      background: var(--cream);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-logo-icon {
+      width: 56px; height: 56px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    .hero-logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: white;
+      letter-spacing: -0.5px;
+    }
+    .hero-logo-text span { font-weight: 300; opacity: 0.8; font-size: 14px; display: block; letter-spacing: 2px; }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(22px, 5vw, 38px);
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+      position: relative; z-index: 1;
+      margin-bottom: 12px;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.85);
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative; z-index: 1;
+      line-height: 1.6;
+    }
+
+    /* ============ NAV TABS ============ */
+    .nav-container {
+      background: white;
+      border-bottom: 1px solid var(--green-100);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(26,46,31,0.06);
+    }
+    .nav-tabs {
+      display: flex;
+      overflow-x: auto;
+      padding: 0 16px;
+      gap: 0;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+    .nav-tab {
+      padding: 16px 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-light);
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+      letter-spacing: 0.3px;
+    }
+    .nav-tab.active {
+      color: var(--green-600);
+      border-bottom-color: var(--green-500);
+    }
+    .nav-tab:hover { color: var(--green-500); }
+
+    /* ============ SECTIONS ============ */
+    .section {
+      padding: 48px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      color: var(--text-light);
+      font-size: 15px;
+      margin-bottom: 40px;
+    }
+    .badge-label {
+      display: inline-block;
+      background: var(--green-100);
+      color: var(--green-700);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    /* ============ PHONE MOCKUP ============ */
+    .phone-showcase {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .phone-wrapper {
+      flex: 0 0 auto;
+      text-align: center;
+    }
+    .phone-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green-600);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .phone-frame {
+      width: 220px;
+      background: #0d1117;
+      border-radius: 36px;
+      padding: 12px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 24px;
+      background: #0d1117;
+      border-radius: 0 0 14px 14px;
+      z-index: 10;
+    }
+    .phone-screen {
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      min-height: 420px;
+    }
+
+    /* ── PHONE SCREEN: LOGIN ── */
+    .ps-login { background: var(--green-50); }
+    .ps-login .ps-header {
+      background: linear-gradient(135deg, var(--green-700), var(--green-500));
+      padding: 36px 16px 20px;
+      text-align: center;
+    }
+    .ps-login .ps-logo-sm {
+      font-size: 28px; margin-bottom: 6px;
+    }
+    .ps-login .ps-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px; font-weight: 700; color: white;
+    }
+    .ps-login .ps-tag { font-size: 10px; color: rgba(255,255,255,0.7); }
+    .ps-tab-row {
+      display: flex;
+      background: white;
+      margin: 16px 12px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .ps-tab {
+      flex: 1;
+      padding: 10px;
+      font-size: 11px; font-weight: 600;
+      text-align: center; color: var(--text-light);
+      cursor: pointer;
+    }
+    .ps-tab.act { background: var(--green-500); color: white; border-radius: 12px; }
+    .ps-form-box {
+      padding: 12px;
+    }
+    .ps-input {
+      background: white;
+      border: 1.5px solid var(--green-200);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: var(--text-mid);
+      margin-bottom: 8px;
+      width: 100%;
+    }
+    .ps-btn-green {
+      background: linear-gradient(135deg, var(--green-600), var(--green-400));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 11px; font-weight: 700;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    /* ── PHONE SCREEN: HOME ── */
+    .ps-home-header {
+      background: linear-gradient(135deg, var(--green-700), var(--green-500));
+      padding: 36px 12px 16px;
+      color: white;
+    }
+    .ps-home-header .loc {
+      font-size: 10px; opacity: 0.8; margin-bottom: 2px;
+    }
+    .ps-home-header .city { font-weight: 700; font-size: 13px; }
+    .aqi-card {
+      margin: 12px;
+      background: linear-gradient(135deg, #f7c948, #f59e0b);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      color: white;
+    }
+    .aqi-card.good { background: linear-gradient(135deg, var(--green-500), var(--green-400)); }
+    .aqi-number { font-size: 40px; font-weight: 800; line-height: 1; }
+    .aqi-status { font-size: 11px; font-weight: 600; opacity: 0.9; margin-top: 4px; }
+    .mini-cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; padding: 0 12px 12px;
+    }
+    .mini-card {
+      background: var(--green-50);
+      border-radius: 10px;
+      padding: 8px;
+      border: 1px solid var(--green-100);
+    }
+    .mini-card .mc-label { font-size: 9px; color: var(--text-light); font-weight: 600; }
+    .mini-card .mc-value { font-size: 14px; font-weight: 700; color: var(--green-700); }
+    .mini-card .mc-unit { font-size: 8px; color: var(--text-light); }
+    .ps-bottom-nav {
+      display: flex;
+      border-top: 1px solid var(--green-100);
+      padding: 8px 0;
+    }
+    .ps-nav-item {
+      flex: 1; text-align: center;
+      font-size: 8px; color: var(--text-light);
+      padding: 4px;
+    }
+    .ps-nav-item.act { color: var(--green-600); font-weight: 700; }
+    .ps-nav-item .ni { font-size: 14px; display: block; }
+
+    /* ── PHONE SCREEN: MAP ── */
+    .ps-map-area {
+      height: 240px;
+      background: linear-gradient(145deg, #e8f5e9 0%, #c8e6c9 40%, #dcedc8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .map-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .map-roads {
+      position: absolute; inset: 0;
+    }
+    .map-pin {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .map-pin.green { background: var(--green-500); }
+    .map-pin.yellow { background: #f59e0b; }
+    .map-pin.orange { background: #f97316; }
+    .map-pin.red { background: #ef4444; }
+    .map-float {
+      position: absolute; bottom: 8px; left: 8px; right: 8px;
+      background: white;
+      border-radius: 10px;
+      padding: 8px 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-size: 9px;
+    }
+    .map-float .mf-title { font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+    .map-float .mf-aqi { color: var(--green-600); font-weight: 600; }
+
+    /* ── PHONE SCREEN: REPORT ── */
+    .ps-report {
+      padding: 12px;
+    }
+    .ps-report h4 {
+      font-size: 13px; font-weight: 700;
+      color: var(--green-700); margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--green-100);
+    }
+    .ps-upload {
+      border: 2px dashed var(--green-300);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 10px;
+      background: var(--green-50);
+    }
+    .ps-upload-icon { font-size: 24px; }
+    .ps-upload-text { font-size: 9px; color: var(--text-light); margin-top: 4px; }
+    .ps-select {
+      width: 100%;
+      border: 1.5px solid var(--green-200);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 10px;
+      margin-bottom: 8px;
+      background: white;
+    }
+    .ps-gps-row {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--green-50);
+      border-radius: 8px; padding: 8px 10px;
+      font-size: 9px; color: var(--green-700);
+      margin-bottom: 8px;
+    }
+    .ps-submit {
+      background: linear-gradient(135deg, var(--green-600), var(--green-400));
+      color: white;
+      border: none; border-radius: 10px;
+      padding: 12px; width: 100%;
+      font-size: 11px; font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* ── PHONE SCREEN: PROFILE ── */
+    .ps-profile-header {
+      background: linear-gradient(135deg, var(--green-700), var(--green-500));
+      padding: 36px 12px 20px;
+      text-align: center; color: white;
+    }
+    .ps-avatar {
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      border: 2px solid rgba(255,255,255,0.5);
+    }
+    .ps-uname { font-weight: 700; font-size: 14px; }
+    .ps-uemail { font-size: 10px; opacity: 0.75; }
+    .ps-stats-row {
+      display: flex; gap: 8px;
+      margin: 12px 10px 0;
+    }
+    .ps-stat {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .ps-stat .sv { font-size: 16px; font-weight: 800; color: var(--green-600); }
+    .ps-stat .sl { font-size: 9px; color: var(--text-light); }
+    .ps-badges {
+      margin: 10px;
+      background: white;
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .ps-badges-title { font-size: 11px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+    .badge-row { display: flex; gap: 8px; }
+    .badge-item {
+      flex: 1; text-align: center;
+      font-size: 18px;
+      background: var(--green-50);
+      border-radius: 8px; padding: 6px;
+    }
+    .badge-item.locked { filter: grayscale(1); opacity: 0.4; }
+    .badge-item .bt { font-size: 8px; color: var(--text-light); display: block; margin-top: 2px; }
+
+    /* ============ WEB DASHBOARD MOCKUP ============ */
+    .browser-frame {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(26,46,31,0.12);
+      border: 1px solid var(--green-100);
+    }
+    .browser-chrome {
+      background: #f5f5f5;
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .bd-red { background: #ff5f57; }
+    .bd-yellow { background: #febc2e; }
+    .bd-green { background: #28c840; }
+    .browser-url {
+      flex: 1;
+      background: white;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 12px;
+      color: #555;
+      border: 1px solid #ddd;
+    }
+    .dash-header {
+      background: linear-gradient(135deg, var(--green-700), var(--green-600));
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dash-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 20px;
+      color: white; display: flex; align-items: center; gap: 8px;
+    }
+    .dash-nav {
+      display: flex; gap: 24px;
+    }
+    .dash-nav a {
+      color: rgba(255,255,255,0.8); font-size: 13px;
+      text-decoration: none; font-weight: 500;
+    }
+    .dash-nav a:hover { color: white; }
+
+    /* Map Hero */
+    .dash-map {
+      height: 280px;
+      background: linear-gradient(145deg, #e8f5e9 0%, #b9e4c4 40%, #dcedc8 80%, #c8e6c9 100%);
+      position: relative; overflow: hidden;
+    }
+    .dash-map-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.35) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .heatmap-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.5;
+    }
+    .hm1 { width: 200px; height: 200px; background: rgba(239,68,68,0.6); top: 40px; left: 38%; }
+    .hm2 { width: 160px; height: 160px; background: rgba(249,115,22,0.5); top: 80px; left: 55%; }
+    .hm3 { width: 180px; height: 180px; background: rgba(234,179,8,0.5); top: 60px; left: 20%; }
+    .hm4 { width: 120px; height: 120px; background: rgba(45,168,109,0.5); top: 120px; left: 5%; }
+    .dash-map-label {
+      position: absolute; top: 12px; left: 16px;
+      background: rgba(255,255,255,0.95);
+      padding: 6px 12px; border-radius: 8px;
+      font-size: 12px; font-weight: 600; color: var(--text-dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .dash-timestamp {
+      position: absolute; top: 12px; right: 16px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 4px 10px; border-radius: 6px;
+      font-size: 11px;
+    }
+
+    /* Heatmap Legend */
+    .heatmap-legend {
+      padding: 10px 24px;
+      background: white;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid var(--green-100);
+      font-size: 11px; color: var(--text-light);
+    }
+    .legend-bar {
+      height: 12px;
+      flex: 1;
+      border-radius: 6px;
+      background: linear-gradient(to right, #22c55e, #84cc16, #eab308, #f97316, #ef4444, #8b5cf6);
+    }
+    .legend-labels {
+      display: flex; justify-content: space-between;
+      flex: 1; font-size: 10px; color: var(--text-light);
+    }
+
+    /* Stats Panel */
+    .dash-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-bottom: 1px solid var(--green-100);
+    }
+    .stat-card {
+      padding: 20px 24px;
+      border-right: 1px solid var(--green-100);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .stat-card:last-child { border-right: none; }
+    .stat-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .si-green { background: var(--green-100); }
+    .si-blue { background: #e0f2fe; }
+    .si-amber { background: #fef3c7; }
+    .stat-info .sv { font-size: 22px; font-weight: 800; color: var(--text-dark); }
+    .stat-info .sl { font-size: 12px; color: var(--text-light); }
+
+    /* Chart Area */
+    .dash-chart-area {
+      padding: 24px;
+      border-bottom: 1px solid var(--green-100);
+    }
+    .chart-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: var(--text-dark); }
+    .chart-svg { width: 100%; height: 120px; }
+
+    /* Ranking Table */
+    .dash-table { padding: 0 24px 24px; }
+    .table-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark); }
+    .rank-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .rank-table th {
+      background: var(--green-50);
+      padding: 10px 12px;
+      text-align: left; font-weight: 700;
+      color: var(--text-mid);
+      border-bottom: 2px solid var(--green-200);
+    }
+    .rank-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--green-50);
+      color: var(--text-dark);
+    }
+    .rank-table tr:hover td { background: var(--green-50); }
+    .aqi-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+    }
+    .aqib-good { background: #dcfce7; color: #15803d; }
+    .aqib-mod { background: #fef9c3; color: #854d0e; }
+    .aqib-bad { background: #fee2e2; color: #991b1b; }
+
+    /* ============ FLOW DIAGRAM ============ */
+    .flow-container {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+      max-width: 600px; margin: 0 auto;
+    }
+    .flow-step {
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      border: 1.5px solid var(--green-100);
+      display: flex; align-items: flex-start; gap: 16px;
+      box-shadow: var(--shadow-card);
+      transition: all 0.3s;
+    }
+    .flow-step:hover {
+      border-color: var(--green-400);
+      box-shadow: 0 8px 32px rgba(45,168,109,0.12);
+      transform: translateY(-2px);
+    }
+    .flow-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-600), var(--green-400));
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .flow-step-icon { font-size: 24px; flex-shrink: 0; }
+    .flow-content h4 { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+    .flow-content p { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+    .flow-arrow {
+      text-align: center;
+      font-size: 20px;
+      color: var(--green-400);
+      padding: 4px 0;
+    }
+
+    /* ============ TECH STACK ============ */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .tech-card {
+      background: white;
+      border: 1.5px solid var(--green-100);
+      border-radius: 16px;
+      padding: 24px 20px;
+      transition: all 0.3s;
+    }
+    .tech-card:hover {
+      border-color: var(--green-400);
+      box-shadow: var(--shadow-green);
+      transform: translateY(-3px);
+    }
+    .tech-card .tc-icon {
+      font-size: 32px; margin-bottom: 12px;
+    }
+    .tech-card h4 {
+      font-size: 15px; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 6px;
+    }
+    .tech-card p {
+      font-size: 13px; color: var(--text-light); line-height: 1.6;
+    }
+    .code-block {
+      background: var(--charcoal);
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.8;
+      overflow-x: auto;
+      margin-top: 24px;
+    }
+    .code-block .c-comment { color: #6a9955; }
+    .code-block .c-keyword { color: #569cd6; }
+    .code-block .c-string { color: #ce9178; }
+    .code-block .c-func { color: #dcdcaa; }
+    .code-block .c-var { color: #9cdcfe; }
+    .code-block .c-normal { color: #d4d4d4; }
+
+    /* ============ ARCHITECTURE DIAGRAM ============ */
+    .arch-diagram {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      border: 1.5px solid var(--green-100);
+      box-shadow: var(--shadow-card);
+    }
+    .arch-layer {
+      margin-bottom: 12px;
+    }
+    .arch-layer-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .arch-nodes {
+      display: flex; gap: 10px; justify-content: center;
+    }
+    .arch-node {
+      background: var(--green-50);
+      border: 1.5px solid var(--green-200);
+      border-radius: 12px;
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 12px; font-weight: 600;
+      color: var(--text-mid);
+      flex: 1;
+    }
+    .arch-node.active {
+      background: linear-gradient(135deg, var(--green-100), var(--green-50));
+      border-color: var(--green-400);
+      color: var(--green-700);
+    }
+    .arch-node .an-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .arch-arrow-row {
+      text-align: center;
+      color: var(--green-400);
+      font-size: 18px;
+      margin: 4px 0;
+    }
+    .arch-divider {
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--green-200), transparent);
+      margin: 8px 0;
+    }
+
+    /* ============ CAPTIVE PORTAL DEMO ============ */
+    .portal-demo {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px; align-items: start;
+    }
+    @media (max-width: 700px) { .portal-demo { grid-template-columns: 1fr; } }
+
+    .portal-phone .phone-frame { margin: 0 auto; }
+    .portal-screen {
+      min-height: 480px;
+      display: flex; flex-direction: column;
+    }
+    .ps-captive-header {
+      background: linear-gradient(135deg, var(--green-700), var(--green-500));
+      padding: 40px 16px 20px;
+      text-align: center; color: white;
+    }
+    .ps-captive-logo { font-size: 36px; margin-bottom: 6px; }
+    .ps-captive-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px; font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .ps-captive-subtitle { font-size: 10px; opacity: 0.75; }
+    .ps-captive-body { padding: 14px; flex: 1; }
+    .ps-aqi-big {
+      background: linear-gradient(135deg, var(--green-500), var(--green-400));
+      border-radius: 16px; padding: 16px;
+      text-align: center; color: white; margin-bottom: 12px;
+    }
+    .ps-aqi-big .aqi-n { font-size: 48px; font-weight: 900; line-height: 1; }
+    .ps-aqi-big .aqi-s { font-size: 13px; font-weight: 600; opacity: 0.9; }
+    .ps-aqi-big .aqi-loc {
+      font-size: 10px; opacity: 0.75;
+      margin-top: 6px; display: flex;
+      align-items: center; justify-content: center; gap: 4px;
+    }
+    .ps-tip {
+      background: var(--green-50);
+      border-left: 3px solid var(--green-400);
+      border-radius: 0 10px 10px 0;
+      padding: 10px 12px;
+      font-size: 10px; color: var(--green-700);
+      margin-bottom: 12px; line-height: 1.5;
+    }
+    .ps-btn-row {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .ps-btn-report {
+      background: linear-gradient(135deg, var(--green-600), var(--green-500));
+      color: white; border: none; border-radius: 12px;
+      padding: 13px; font-size: 12px; font-weight: 700;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center; gap: 6px;
+    }
+    .ps-btn-skip {
+      background: white; border: 1.5px solid var(--green-300);
+      border-radius: 12px; padding: 11px;
+      font-size: 11px; font-weight: 600; color: var(--text-mid);
+      cursor: pointer;
+    }
+
+    /* Portal Right side - info panel */
+    .portal-info {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .info-card {
+      background: white;
+      border: 1.5px solid var(--green-100);
+      border-radius: 16px; padding: 20px;
+      box-shadow: var(--shadow-card);
+    }
+    .info-card h4 {
+      font-size: 14px; font-weight: 700;
+      color: var(--green-700); margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .info-card p {
+      font-size: 13px; color: var(--text-light);
+      line-height: 1.6;
+    }
+    .info-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--green-100); color: var(--green-700);
+      border-radius: 6px; padding: 3px 8px;
+      font-size: 10px; font-weight: 600;
+    }
+
+    /* ============ FOOTER ============ */
+    .site-footer {
+      background: var(--green-900);
+      color: rgba(255,255,255,0.7);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px; font-weight: 700; color: white;
+      margin-bottom: 8px;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 24px;
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      font-size: 13px;
+    }
+    .footer-links a:hover { color: white; }
+    .footer-copy { font-size: 12px; opacity: 0.5; }
+
+    /* Smooth scrolling for tabs */
+    html { scroll-behavior: smooth; }
+    .section { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .phone-showcase { gap: 20px; }
+      .phone-frame { width: 180px; }
+      .dash-stats { grid-template-columns: 1fr; }
+      .stat-card { border-right: none; border-bottom: 1px solid var(--green-100); }
+      .dash-nav { display: none; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--green-300); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero-banner">
+  <div class="hero-logo">
+    <div class="hero-logo-icon">🌿</div>
+    <div class="hero-logo-text">
+      COMFY
+      <span>COMMUNITY SMART AIR MONITORING</span>
+    </div>
+  </div>
+  <div class="hero-title">Udara Bersih untuk Kehidupan Sehat</div>
+  <div class="hero-sub">Platform monitoring kualitas udara berbasis komunitas — bersama kita jaga udara bersih, bebas rokok, bebas polusi.</div>
+</div>
+
+<!-- NAV -->
+<div class="nav-container">
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchTab('mobile')">📱 Aplikasi Mobile</div>
+    <div class="nav-tab" onclick="switchTab('web')">🖥️ Web Dashboard</div>
+    <div class="nav-tab" onclick="switchTab('portal')">📡 Captive Portal WiFi</div>
+    <div class="nav-tab" onclick="switchTab('arch')">⚙️ Arsitektur Sistem</div>
+    <div class="nav-tab" onclick="switchTab('flow')">🔄 Alur Kerja</div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION: MOBILE ═══════════════ -->
+<div id="tab-mobile" class="page-section active">
+  <div class="section">
+    <div class="badge-label">Gambar 1–5 · Mockup Aplikasi</div>
+    <div class="section-title">Tampilan Aplikasi Mobile COMFY</div>
+    <div class="section-sub">Antarmuka yang ramah pengguna untuk memantau kualitas udara dan melaporkan polusi secara real-time.</div>
+
+    <div class="phone-showcase">
+
+      <!-- Screen 1: Login -->
+      <div class="phone-wrapper">
+        <div class="phone-label">Gambar 1 · Login & Registrasi</div>
+        <div class="phone-frame">
+          <div class="phone-screen ps-login">
+            <div class="ps-header">
+              <div class="ps-logo-sm">🌿</div>
+              <div class="ps-brand">COMFY</div>
+              <div class="ps-tag">Community Smart Air Monitoring</div>
+            </div>
+            <div class="ps-tab-row">
+              <div class="ps-tab act">Masuk</div>
+              <div class="ps-tab">Daftar</div>
+            </div>
+            <div class="ps-form-box" style="padding-top:16px">
+              <div class="ps-input" style="color:#aaa">📧 Alamat Email</div>
+              <div class="ps-input" style="color:#aaa">🔒 Kata Sandi</div>
+              <button class="ps-btn-green">Masuk</button>
+              <div style="text-align:center;font-size:10px;color:var(--text-light);margin-top:14px;">
+                Belum punya akun? <span style="color:var(--green-600);font-weight:700;">Daftar Sekarang</span>
+              </div>
+              <div style="text-align:center;margin-top:24px;font-size:10px;color:var(--text-light);">
+                Bergabunglah bersama <strong style="color:var(--green-600)">10.523</strong> penjaga udara bersih
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 2: Home -->
+      <div class="phone-wrapper">
+        <div class="phone-label">Gambar 2 · Beranda (Home)</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="ps-home-header">
+              <div class="loc">📍 Lokasi Anda</div>
+              <div class="city">Medan, North Sumatra</div>
+            </div>
+            <div class="aqi-card">
+              <div class="aqi-number">78</div>
+              <div class="aqi-status">SEDANG · Waspada Aktivitas Luar</div>
+            </div>
+            <div class="mini-cards">
+              <div class="mini-card">
+                <div class="mc-label">PM2.5</div>
+                <div class="mc-value">35</div>
+                <div class="mc-unit">µg/m³</div>
+              </div>
+              <div class="mini-card">
+                <div class="mc-label">PM10</div>
+                <div class="mc-value">55</div>
+                <div class="mc-unit">µg/m³</div>
+              </div>
+              <div class="mini-card">
+                <div class="mc-label">CO</div>
+                <div class="mc-value">2.1</div>
+                <div class="mc-unit">ppm</div>
+              </div>
+              <div class="mini-card">
+                <div class="mc-label">NO₂</div>
+                <div class="mc-value">0.8</div>
+                <div class="mc-unit">ppm</div>
+              </div>
+            </div>
+            <div class="ps-bottom-nav">
+              <div class="ps-nav-item act"><span class="ni">🏠</span>Home</div>
+              <div class="ps-nav-item"><span class="ni">🗺️</span>Peta</div>
+              <div class="ps-nav-item"><span class="ni">📢</span>Lapor</div>
+              <div class="ps-nav-item"><span class="ni">👤</span>Profil</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Map -->
+      <div class="phone-wrapper">
+        <div class="phone-label">Gambar 3 · Peta Sensor</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="ps-map-area">
+              <div class="map-grid"></div>
+              <!-- Simulated roads -->
+              <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 220 240">
+                <line x1="0" y1="120" x2="220" y2="120" stroke="rgba(255,255,255,0.6)" stroke-width="3"/>
+                <line x1="110" y1="0" x2="110" y2="240" stroke="rgba(255,255,255,0.6)" stroke-width="3"/>
+                <line x1="0" y1="60" x2="220" y2="180" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+              </svg>
+              <!-- Pins -->
+              <div class="map-pin green" style="top:40px;left:60px"></div>
+              <div class="map-pin green" style="top:70px;left:120px"></div>
+              <div class="map-pin yellow" style="top:100px;left:80px"></div>
+              <div class="map-pin yellow" style="top:50px;left:160px"></div>
+              <div class="map-pin orange" style="top:140px;left:140px"></div>
+              <div class="map-pin red" style="top:160px;left:90px"></div>
+              <div class="map-pin green" style="top:120px;left:30px"></div>
+              <div class="map-float">
+                <div class="mf-title">📍 Sensor Terdekat: Jl. Gatot Subroto</div>
+                <div class="mf-aqi">AQI: 65 · Sedang &nbsp; ⏱ Real-time</div>
+              </div>
+            </div>
+            <div style="padding:8px 10px;background:white;border-bottom:1px solid var(--green-100);">
+              <div style="display:flex;gap:6px;font-size:9px;">
+                <span style="background:var(--green-100);color:var(--green-700);padding:3px 8px;border-radius:10px;font-weight:700;">Real-time</span>
+                <span style="background:#f0f0f0;color:#666;padding:3px 8px;border-radius:10px;">1 Jam</span>
+                <span style="background:#f0f0f0;color:#666;padding:3px 8px;border-radius:10px;">24 Jam</span>
+                <span style="background:#e0f2fe;color:#0369a1;padding:3px 8px;border-radius:10px;margin-left:auto;">🧭 Rute</span>
+              </div>
+            </div>
+            <div class="ps-bottom-nav">
+              <div class="ps-nav-item"><span class="ni">🏠</span>Home</div>
+              <div class="ps-nav-item act"><span class="ni">🗺️</span>Peta</div>
+              <div class="ps-nav-item"><span class="ni">📢</span>Lapor</div>
+              <div class="ps-nav-item"><span class="ni">👤</span>Profil</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 4: Report -->
+      <div class="phone-wrapper">
+        <div class="phone-label">Gambar 4 · Form Laporan</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div style="background:linear-gradient(135deg,var(--green-700),var(--green-500));padding:36px 12px 14px;color:white;text-align:center;">
+              <div style="font-weight:700;font-size:14px;">📢 Laporkan Polusi</div>
+              <div style="font-size:10px;opacity:0.75;">Bantu jaga udara bersih bersama</div>
+            </div>
+            <div class="ps-report">
+              <div class="ps-upload">
+                <div class="ps-upload-icon">📷</div>
+                <div class="ps-upload-text">Upload Foto Polusi<br><span style="font-size:8px;color:#ccc;">Wajah akan otomatis di-blur</span></div>
+              </div>
+              <select class="ps-select">
+                <option>🚗 Asap Kendaraan</option>
+                <option>🔥 Pembakaran Sampah</option>
+                <option>🏭 Asap Pabrik</option>
+                <option>🚧 Debu Konstruksi</option>
+              </select>
+              <div class="ps-gps-row">
+                <span>📍</span>
+                <span>Auto-detect: Jl. Sisingamangaraja, Medan</span>
+              </div>
+              <textarea class="ps-select" rows="2" placeholder="Deskripsi singkat kejadian..."></textarea>
+              <button class="ps-submit">✅ Submit Laporan &nbsp; +10 Poin</button>
+            </div>
+            <div class="ps-bottom-nav" style="margin-top:auto;">
+              <div class="ps-nav-item"><span class="ni">🏠</span>Home</div>
+              <div class="ps-nav-item"><span class="ni">🗺️</span>Peta</div>
+              <div class="ps-nav-item act"><span class="ni">📢</span>Lapor</div>
+              <div class="ps-nav-item"><span class="ni">👤</span>Profil</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 5: Profile -->
+      <div class="phone-wrapper">
+        <div class="phone-label">Gambar 5 · Profil & Gamifikasi</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="ps-profile-header">
+              <div class="ps-avatar">🧑</div>
+              <div class="ps-uname">Andi Pratama</div>
+              <div class="ps-uemail">andi@email.com · Medan</div>
+            </div>
+            <div class="ps-stats-row">
+              <div class="ps-stat">
+                <div class="sv">15</div>
+                <div class="sl">Laporan</div>
+              </div>
+              <div class="ps-stat">
+                <div class="sv">150</div>
+                <div class="sl">Poin</div>
+              </div>
+              <div class="ps-stat">
+                <div class="sv" style="font-size:11px;">Eco<br>Warrior</div>
+                <div class="sl">Level</div>
+              </div>
+            </div>
+            <div class="ps-badges" style="margin-top:10px;">
+              <div class="ps-badges-title">🏅 Badge Achievement</div>
+              <div class="badge-row">
+                <div class="badge-item">🌱<span class="bt">Pemula</span></div>
+                <div class="badge-item">🌿<span class="bt">Reporter</span></div>
+                <div class="badge-item">🌳<span class="bt">Eco Warrior</span></div>
+                <div class="badge-item locked">🏆<span class="bt">Guardian</span></div>
+              </div>
+            </div>
+            <div style="margin:8px 10px;display:flex;gap:8px;">
+              <button class="ps-btn-green" style="flex:1;padding:8px;font-size:10px;">🏆 Leaderboard</button>
+              <button class="ps-btn-green" style="flex:1;padding:8px;font-size:10px;background:white;color:var(--green-600);border:1.5px solid var(--green-300);">🎁 Tukar Poin</button>
+            </div>
+            <div class="ps-bottom-nav">
+              <div class="ps-nav-item"><span class="ni">🏠</span>Home</div>
+              <div class="ps-nav-item"><span class="ni">🗺️</span>Peta</div>
+              <div class="ps-nav-item"><span class="ni">📢</span>Lapor</div>
+              <div class="ps-nav-item act"><span class="ni">👤</span>Profil</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION: WEB DASHBOARD ═══════════════ -->
+<div id="tab-web" class="page-section">
+  <div class="section">
+    <div class="badge-label">Gambar 6–7 · Web Dashboard</div>
+    <div class="section-title">Dashboard Publik COMFY</div>
+    <div class="section-sub">Akses data kualitas udara real-time tanpa perlu login — transparan untuk seluruh masyarakat.</div>
+
+    <div class="browser-frame">
+      <div class="browser-chrome">
+        <div class="browser-dots">
+          <span class="bd-red"></span>
+          <span class="bd-yellow"></span>
+          <span class="bd-green"></span>
+        </div>
+        <div class="browser-url">🔒 comfy.id/dashboard</div>
+      </div>
+
+      <!-- Header -->
+      <div class="dash-header">
+        <div class="dash-logo">🌿 <span>COMFY</span></div>
+        <div class="dash-nav">
+          <a href="#">Beranda</a>
+          <a href="#">Tentang</a>
+          <a href="#">Data</a>
+          <a href="#">Kontak</a>
+        </div>
+      </div>
+
+      <!-- Map Hero -->
+      <div class="dash-map">
+        <div class="dash-map-grid"></div>
+        <div class="heatmap-blob hm4"></div>
+        <div class="heatmap-blob hm3"></div>
+        <div class="heatmap-blob hm1"></div>
+        <div class="heatmap-blob hm2"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.3" viewBox="0 0 800 280">
+          <line x1="0" y1="140" x2="800" y2="140" stroke="white" stroke-width="2"/>
+          <line x1="400" y1="0" x2="400" y2="280" stroke="white" stroke-width="2"/>
+          <line x1="200" y1="0" x2="200" y2="280" stroke="white" stroke-width="1"/>
+          <line x1="600" y1="0" x2="600" y2="280" stroke="white" stroke-width="1"/>
+        </svg>
+        <div class="dash-map-label">🗺️ Peta Kualitas Udara Kota Medan — Real-time</div>
+        <div class="dash-timestamp">⏱ Update: 14 Mar 2026, 14:35 WIB</div>
+      </div>
+
+      <!-- Legend -->
+      <div class="heatmap-legend">
+        <span style="font-weight:600;color:var(--text-dark);">AQI:</span>
+        <span>0</span>
+        <div style="flex:1">
+          <div class="legend-bar"></div>
+          <div class="legend-labels">
+            <span>Baik</span><span>Sedang</span><span>Tidak Sehat</span><span>Berbahaya</span>
+          </div>
+        </div>
+        <span>&gt;300</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="dash-stats">
+        <div class="stat-card">
+          <div class="stat-icon si-green">📡</div>
+          <div class="stat-info">
+            <div class="sv">245</div>
+            <div class="sl">Sensor Aktif</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-blue">👥</div>
+          <div class="stat-info">
+            <div class="sv">10.523</div>
+            <div class="sl">Pengguna Aktif</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-amber">📋</div>
+          <div class="stat-info">
+            <div class="sv">87</div>
+            <div class="sl">Laporan Hari Ini</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="dash-chart-area">
+        <div class="chart-title">📈 Tren AQI 7 Hari Terakhir</div>
+        <svg class="chart-svg" viewBox="0 0 700 120" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2da86d" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#2da86d" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Grid -->
+          <line x1="0" y1="30" x2="700" y2="30" stroke="#e8f5e9" stroke-width="1"/>
+          <line x1="0" y1="60" x2="700" y2="60" stroke="#e8f5e9" stroke-width="1"/>
+          <line x1="0" y1="90" x2="700" y2="90" stroke="#e8f5e9" stroke-width="1"/>
+          <!-- Fill -->
+          <path d="M 0 80 C 100 70 150 50 200 55 S 300 40 400 45 S 500 35 600 40 L 700 38 L 700 120 L 0 120 Z" fill="url(#chartGrad)"/>
+          <!-- Line -->
+          <path d="M 0 80 C 100 70 150 50 200 55 S 300 40 400 45 S 500 35 600 40 L 700 38" fill="none" stroke="#2da86d" stroke-width="3" stroke-linecap="round"/>
+          <!-- Dots -->
+          <circle cx="0" cy="80" r="5" fill="#2da86d" stroke="white" stroke-width="2"/>
+          <circle cx="116" cy="60" r="5" fill="#2da86d" stroke="white" stroke-width="2"/>
+          <circle cx="233" cy="55" r="5" fill="#f59e0b" stroke="white" stroke-width="2"/>
+          <circle cx="350" cy="40" r="5" fill="#2da86d" stroke="white" stroke-width="2"/>
+          <circle cx="466" cy="45" r="5" fill="#2da86d" stroke="white" stroke-width="2"/>
+          <circle cx="583" cy="35" r="5" fill="#2da86d" stroke="white" stroke-width="2"/>
+          <circle cx="700" cy="38" r="5" fill="#2da86d" stroke="white" stroke-width="2"/>
+          <!-- Labels -->
+          <text x="0" y="115" font-size="10" fill="#9ca3af" text-anchor="middle">8 Mar</text>
+          <text x="116" y="115" font-size="10" fill="#9ca3af" text-anchor="middle">9 Mar</text>
+          <text x="233" y="115" font-size="10" fill="#9ca3af" text-anchor="middle">10 Mar</text>
+          <text x="350" y="115" font-size="10" fill="#9ca3af" text-anchor="middle">11 Mar</text>
+          <text x="466" y="115" font-size="10" fill="#9ca3af" text-anchor="middle">12 Mar</text>
+          <text x="583" y="115" font-size="10" fill="#9ca3af" text-anchor="middle">13 Mar</text>
+          <text x="700" y="115" font-size="10" fill="#9ca3af" text-anchor="middle">14 Mar</text>
+        </svg>
+      </div>
+
+      <!-- Ranking Table -->
+      <div class="dash-table">
+        <div class="table-title">🏙️ Ranking Kualitas Udara per Area</div>
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Lokasi</th>
+              <th>AQI</th>
+              <th>Kategori</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Taman Ahmad Yani</td><td>38</td><td><span class="aqi-badge aqib-good">Baik</span></td></tr>
+            <tr><td>2</td><td>Jl. Sisingamangaraja</td><td>56</td><td><span class="aqi-badge aqib-mod">Sedang</span></td></tr>
+            <tr><td>3</td><td>Kawasan Industri Medan</td><td>142</td><td><span class="aqi-badge aqib-bad">Tidak Sehat</span></td></tr>
+            <tr><td>4</td><td>Jl. Gatot Subroto</td><td>65</td><td><span class="aqi-badge aqib-mod">Sedang</span></td></tr>
+            <tr><td>5</td><td>Medan Baru</td><td>44</td><td><span class="aqi-badge aqib-good">Baik</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Policy Dashboard -->
+    <div style="margin-top:48px;">
+      <div class="badge-label">Gambar 7 · Policy Dashboard</div>
+      <div class="section-title">Dashboard Kebijakan (Pemerintah & Stakeholder)</div>
+      <div class="section-sub">Analisis mendalam untuk Dinkes, DLH, dan Pemda berbasis data COMFY.</div>
+
+      <div class="browser-frame">
+        <div class="browser-chrome">
+          <div class="browser-dots"><span class="bd-red"></span><span class="bd-yellow"></span><span class="bd-green"></span></div>
+          <div class="browser-url">🔒 comfy.id/dashboard/policy · Admin Dinas Lingkungan Hidup Kota Medan</div>
+        </div>
+        <div style="display:grid;grid-template-columns:220px 1fr;min-height:380px;">
+          <!-- Sidebar -->
+          <div style="background:var(--green-900);padding:20px;color:white;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;margin-bottom:4px;">🌿 COMFY</div>
+            <div style="font-size:10px;opacity:0.6;margin-bottom:24px;">Policy Dashboard</div>
+            <div style="font-size:11px;font-weight:600;margin-bottom:16px;opacity:0.5;letter-spacing:1px;">FILTER DATA</div>
+            <div style="margin-bottom:12px;">
+              <div style="font-size:10px;opacity:0.7;margin-bottom:4px;">Rentang Waktu</div>
+              <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px;font-size:11px;">📅 30 Hari Terakhir</div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div style="font-size:10px;opacity:0.7;margin-bottom:4px;">Area</div>
+              <div style="background:var(--green-600);border-radius:8px;padding:8px;font-size:11px;">📍 Seluruh Kota</div>
+            </div>
+            <div style="margin-bottom:24px;">
+              <div style="font-size:10px;opacity:0.7;margin-bottom:4px;">Polutan</div>
+              <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:8px;font-size:11px;">🌫️ Semua Polutan</div>
+            </div>
+            <div style="font-size:11px;font-weight:600;margin-bottom:12px;opacity:0.5;letter-spacing:1px;">EXPORT</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="background:rgba(255,255,255,0.1);border-radius:6px;padding:7px 10px;font-size:11px;cursor:pointer;">📊 CSV</div>
+              <div style="background:rgba(255,255,255,0.1);border-radius:6px;padding:7px 10px;font-size:11px;cursor:pointer;">📄 PDF</div>
+              <div style="background:rgba(255,255,255,0.1);border-radius:6px;padding:7px 10px;font-size:11px;cursor:pointer;">📈 Excel</div>
+            </div>
+          </div>
+          <!-- Main content -->
+          <div style="padding:20px;background:var(--cream);">
+            <div style="font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:16px;">Korelasi AQI vs Volume Traffic</div>
+            <!-- Dual axis chart simulation -->
+            <div style="background:white;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow-card);">
+              <svg viewBox="0 0 500 120" width="100%" height="120">
+                <line x1="0" y1="30" x2="500" y2="30" stroke="#f0fdf4" stroke-width="1"/>
+                <line x1="0" y1="60" x2="500" y2="60" stroke="#f0fdf4" stroke-width="1"/>
+                <line x1="0" y1="90" x2="500" y2="90" stroke="#f0fdf4" stroke-width="1"/>
+                <!-- Traffic bars -->
+                <rect x="20" y="50" width="25" height="50" fill="#cbd5e1" rx="3"/>
+                <rect x="85" y="40" width="25" height="60" fill="#cbd5e1" rx="3"/>
+                <rect x="150" y="30" width="25" height="70" fill="#cbd5e1" rx="3"/>
+                <rect x="215" y="45" width="25" height="55" fill="#cbd5e1" rx="3"/>
+                <rect x="280" y="55" width="25" height="45" fill="#cbd5e1" rx="3"/>
+                <rect x="345" y="35" width="25" height="65" fill="#cbd5e1" rx="3"/>
+                <rect x="410" y="42" width="25" height="58" fill="#cbd5e1" rx="3"/>
+                <!-- AQI line -->
+                <polyline points="32,70 97,55 162,45 227,60 292,65 357,48 422,55" fill="none" stroke="var(--green-500)" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="32" cy="70" r="4" fill="var(--green-500)" stroke="white" stroke-width="1.5"/>
+                <circle cx="97" cy="55" r="4" fill="var(--green-500)" stroke="white" stroke-width="1.5"/>
+                <circle cx="162" cy="45" r="4" fill="var(--green-500)" stroke="white" stroke-width="1.5"/>
+                <circle cx="227" cy="60" r="4" fill="var(--green-500)" stroke="white" stroke-width="1.5"/>
+                <circle cx="292" cy="65" r="4" fill="var(--green-500)" stroke="white" stroke-width="1.5"/>
+                <circle cx="357" cy="48" r="4" fill="var(--green-500)" stroke="white" stroke-width="1.5"/>
+                <circle cx="422" cy="55" r="4" fill="var(--green-500)" stroke="white" stroke-width="1.5"/>
+              </svg>
+              <div style="display:flex;gap:16px;font-size:11px;justify-content:center;margin-top:4px;">
+                <span><span style="display:inline-block;width:16px;height:8px;background:var(--green-500);border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Indeks AQI</span>
+                <span><span style="display:inline-block;width:16px;height:8px;background:#cbd5e1;border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Volume Traffic</span>
+              </div>
+            </div>
+            <!-- Alert settings -->
+            <div style="background:white;border-radius:12px;padding:16px;box-shadow:var(--shadow-card);">
+              <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text-dark);">⚠️ Alert Threshold</div>
+              <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--text-light);">
+                <span>Notifikasi jika AQI melebihi</span>
+                <span style="background:var(--green-100);color:var(--green-700);font-weight:700;padding:4px 12px;border-radius:8px;">150</span>
+                <span>di area</span>
+                <span style="background:var(--green-100);color:var(--green-700);font-weight:700;padding:4px 12px;border-radius:8px;">Semua Area</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION: CAPTIVE PORTAL ═══════════════ -->
+<div id="tab-portal" class="page-section">
+  <div class="section">
+    <div class="badge-label">Fitur Unggulan · Captive Portal</div>
+    <div class="section-title">Sistem Pelaporan via WiFi Publik</div>
+    <div class="section-sub">Pengguna dapat melaporkan pelanggaran Kawasan Tanpa Rokok (KTR) langsung saat terhubung WiFi — tanpa install aplikasi.</div>
+
+    <div class="portal-demo">
+      <!-- Phone -->
+      <div class="portal-phone">
+        <div style="text-align:center;margin-bottom:12px;">
+          <div class="phone-label">Tampilan Captive Portal di Smartphone</div>
+        </div>
+        <div class="phone-frame" style="max-width:240px;margin:0 auto;">
+          <div class="phone-screen portal-screen">
+            <div class="ps-captive-header">
+              <div class="ps-captive-logo">🌿</div>
+              <div class="ps-captive-brand">COMFY</div>
+              <div class="ps-captive-subtitle">TAMAN KOTA MEDAN · HALTE A</div>
+            </div>
+            <div class="ps-captive-body">
+              <div class="ps-aqi-big">
+                <div class="aqi-n">42</div>
+                <div class="aqi-s">✅ KUALITAS UDARA BAIK</div>
+                <div class="aqi-loc">📍 Taman Kota Medan · 14:35 WIB</div>
+              </div>
+              <div class="ps-tip">
+                💡 Udara di sini dalam kondisi baik. Bantu pertahankan dengan melaporkan pelanggaran merokok!
+              </div>
+              <div class="ps-btn-row">
+                <button class="ps-btn-report">🚭 Laporkan Pelanggaran KTR</button>
+                <button class="ps-btn-skip">➡️ Lanjut ke Internet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Panel -->
+      <div class="portal-info">
+        <div class="info-card">
+          <h4>📡 Bagaimana Cara Kerjanya?</h4>
+          <p>Perangkat <strong>ESP32</strong> dipasang di tiang sensor COMFY. Saat pengguna menghubungkan WiFi <code style="background:var(--green-100);padding:2px 6px;border-radius:4px;font-size:12px;">COMFY-PUBLIC</code>, browser otomatis menampilkan halaman portal ini — tanpa perlu install aplikasi.</p>
+        </div>
+        <div class="info-card">
+          <h4>🔄 Alur Singkat</h4>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+              <span style="background:var(--green-500);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;">1</span>
+              <span>User konek WiFi <span class="info-badge">COMFY-PUBLIC</span></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+              <span style="background:var(--green-500);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;">2</span>
+              <span>Browser redirect otomatis ke halaman COMFY</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+              <span style="background:var(--green-500);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;">3</span>
+              <span>Tampil data AQI real-time dari sensor terdekat</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+              <span style="background:var(--green-500);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;">4</span>
+              <span>User bisa lapor pelanggaran KTR dengan mudah</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+              <span style="background:var(--green-500);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;">5</span>
+              <span>Laporan terkirim ke cloud → petugas ditindaklanjuti</span>
+            </div>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4>⚙️ Komponen Teknis</h4>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <span class="info-badge">📡 ESP32 WiFi AP</span>
+            <span class="info-badge">🌐 DNS Hijacking</span>
+            <span class="info-badge">🖥️ ESPAsyncWebServer</span>
+            <span class="info-badge">☁️ HTTPS API</span>
+            <span class="info-badge">🔐 JWT Auth</span>
+            <span class="info-badge">📷 Auto Face-Blur</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Block -->
+    <div class="code-block" style="margin-top:32px;">
+      <div class="c-comment">// ESP32 Captive Portal — COMFY System</div><br>
+      <span class="c-keyword">#include</span> <span class="c-string">&lt;WiFi.h&gt;</span><br>
+      <span class="c-keyword">#include</span> <span class="c-string">&lt;DNSServer.h&gt;</span><br>
+      <span class="c-keyword">#include</span> <span class="c-string">&lt;ESPAsyncWebServer.h&gt;</span><br><br>
+      <span class="c-var">DNSServer</span> dnsServer;<br>
+      <span class="c-var">AsyncWebServer</span> server(80);<br><br>
+      <span class="c-keyword">void</span> <span class="c-func">setup</span>() {<br>
+      &nbsp;&nbsp;<span class="c-comment">// Aktifkan Access Point mode</span><br>
+      &nbsp;&nbsp;WiFi.<span class="c-func">softAP</span>(<span class="c-string">"COMFY-PUBLIC"</span>);<br><br>
+      &nbsp;&nbsp;<span class="c-comment">// Redirect semua DNS ke captive portal</span><br>
+      &nbsp;&nbsp;dnsServer.<span class="c-func">start</span>(53, <span class="c-string">"*"</span>, WiFi.<span class="c-func">softAPIP</span>());<br><br>
+      &nbsp;&nbsp;<span class="c-comment">// Serve halaman splash dengan data AQI real-time</span><br>
+      &nbsp;&nbsp;server.<span class="c-func">on</span>(<span class="c-string">"/"</span>, HTTP_GET, [](<span class="c-var">AsyncWebServerRequest</span> *req) {<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;String html = <span class="c-func">getAQIPage</span>();<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;req-><span class="c-func">send</span>(200, <span class="c-string">"text/html"</span>, html);<br>
+      &nbsp;&nbsp;});<br><br>
+      &nbsp;&nbsp;<span class="c-comment">// Handle laporan pelanggaran KTR</span><br>
+      &nbsp;&nbsp;server.<span class="c-func">on</span>(<span class="c-string">"/submit"</span>, HTTP_POST, <span class="c-func">handleReport</span>);<br>
+      &nbsp;&nbsp;server.<span class="c-func">begin</span>();<br>
+      }<br><br>
+      <span class="c-keyword">void</span> <span class="c-func">loop</span>() {<br>
+      &nbsp;&nbsp;dnsServer.<span class="c-func">processNextRequest</span>();<br>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION: ARCHITECTURE ═══════════════ -->
+<div id="tab-arch" class="page-section">
+  <div class="section">
+    <div class="badge-label">Gambar 11 · Arsitektur IoT</div>
+    <div class="section-title">Arsitektur IoT 4-Layer COMFY</div>
+    <div class="section-sub">Dari sensor fisik di lapangan hingga tampilan di layar pengguna — empat lapisan teknologi yang terintegrasi.</div>
+
+    <div class="arch-diagram">
+      <!-- Layer 4: App -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">Layer 4 · Application Layer</div>
+        <div class="arch-nodes">
+          <div class="arch-node active"><span class="an-icon">📱</span>Mobile App</div>
+          <div class="arch-node active"><span class="an-icon">🖥️</span>Web Dashboard</div>
+          <div class="arch-node active"><span class="an-icon">🔔</span>Push Notification</div>
+          <div class="arch-node active"><span class="an-icon">📡</span>Captive Portal</div>
+        </div>
+      </div>
+      <div class="arch-arrow-row">⬇️ &nbsp; ⬆️</div>
+      <!-- Layer 3: Platform -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">Layer 3 · Platform Layer (Cloud)</div>
+        <div class="arch-nodes">
+          <div class="arch-node active"><span class="an-icon">🗄️</span>Time-Series DB</div>
+          <div class="arch-node active"><span class="an-icon">🧠</span>ML Engine</div>
+          <div class="arch-node active"><span class="an-icon">🔌</span>REST API Server</div>
+        </div>
+      </div>
+      <div class="arch-arrow-row">⬇️ &nbsp; ⬆️</div>
+      <!-- Layer 2: Network -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">Layer 2 · Network Layer</div>
+        <div class="arch-nodes">
+          <div class="arch-node active"><span class="an-icon">📶</span>LoRaWAN / NB-IoT</div>
+          <div class="arch-node active"><span class="an-icon">🌐</span>MQTT Protocol</div>
+          <div class="arch-node active"><span class="an-icon">🔗</span>Gateway Node</div>
+        </div>
+      </div>
+      <div class="arch-arrow-row">⬇️ &nbsp; ⬆️</div>
+      <!-- Layer 1: Sensing -->
+      <div class="arch-layer">
+        <div class="arch-layer-label">Layer 1 · Sensing Layer (Hardware)</div>
+        <div class="arch-nodes">
+          <div class="arch-node active"><span class="an-icon">🌫️</span>Sensor PM2.5</div>
+          <div class="arch-node active"><span class="an-icon">💨</span>MQ-135 (CO/NO₂)</div>
+          <div class="arch-node active"><span class="an-icon">🌡️</span>DHT22 (Suhu/RH)</div>
+          <div class="arch-node active"><span class="an-icon">☀️</span>Panel Surya</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech stack grid -->
+    <div style="margin-top:48px;">
+      <div class="section-title" style="margin-bottom:24px;">Stack Teknologi COMFY</div>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tc-icon">📡</div>
+          <h4>ESP32 WiFi AP</h4>
+          <p>Microcontroller dual-core dengan WiFi & Bluetooth built-in. Mode Access Point untuk captive portal.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tc-icon">🌐</div>
+          <h4>DNS Hijacking</h4>
+          <p>Semua DNS query dari client diarahkan ke web server lokal ESP32 untuk menampilkan portal.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tc-icon">🖥️</div>
+          <h4>Embedded Web Server</h4>
+          <p>ESPAsyncWebServer library untuk menyajikan halaman HTML/CSS/JS dari SPIFFS storage.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tc-icon">☁️</div>
+          <h4>Cloud Sync</h4>
+          <p>Laporan dikirim via HTTPS POST ke backend API dengan autentikasi JWT yang aman.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tc-icon">📶</div>
+          <h4>LoRaWAN / NB-IoT</h4>
+          <p>Transmisi data sensor jarak jauh dengan konsumsi daya rendah dan jangkauan hingga 15 km.</p>
+        </div>
+        <div class="tech-card">
+          <div class="tc-icon">🧠</div>
+          <h4>Machine Learning</h4>
+          <p>Model prediksi AQI 24 jam ke depan dan deteksi anomali polusi menggunakan time-series ML.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SECTION: FLOW ═══════════════ -->
+<div id="tab-flow" class="page-section">
+  <div class="section">
+    <div class="badge-label">Gambar 10 · Data Pipeline</div>
+    <div class="section-title">Alur Kerja Sistem COMFY</div>
+    <div class="section-sub">Dari pengambilan data sensor hingga tampil di layar pengguna — semua berjalan dalam kurang dari 5 menit.</div>
+
+    <div class="flow-container">
+
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-step-icon">📡</div>
+        <div class="flow-content">
+          <h4>Sensor Acquisition</h4>
+          <p>45 sensor di 3 zona kota mengukur PM2.5, PM10, CO, NO₂, dan VOC setiap <strong>1 menit</strong> secara otomatis.</p>
+        </div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-step-icon">🔍</div>
+        <div class="flow-content">
+          <h4>Quality Check</h4>
+          <p>Validasi data menggunakan <strong>outlier detection</strong> — data yang tidak valid dibuang sebelum diproses lebih lanjut.</p>
+        </div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-step-icon">⚙️</div>
+        <div class="flow-content">
+          <h4>Auto-Calibration</h4>
+          <p>Penyesuaian otomatis jika terjadi <strong>sensor drift</strong> menggunakan algoritma kalibrasi berbasis ML.</p>
+        </div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-step-icon">🔢</div>
+        <div class="flow-content">
+          <h4>Data Aggregation</h4>
+          <p>Agregasi data per <strong>5 menit, 1 jam, dan 24 jam</strong> untuk berbagai kebutuhan visualisasi.</p>
+        </div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-step-icon">📊</div>
+        <div class="flow-content">
+          <h4>AQI Calculation</h4>
+          <p>Perhitungan Indeks Kualitas Udara sesuai <strong>standar BMKG/KLHK Indonesia</strong> secara real-time.</p>
+        </div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+
+      <div class="flow-step">
+        <div class="flow-num">6</div>
+        <div class="flow-step-icon">🗄️</div>
+        <div class="flow-content">
+          <h4>Database Storage</h4>
+          <p>Penyimpanan di time-series database dengan <strong>retention policy 5 tahun</strong> dan backup otomatis.</p>
+        </div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+
+      <div class="flow-step">
+        <div class="flow-num">7</div>
+        <div class="flow-step-icon">📱</div>
+        <div class="flow-content">
+          <h4>User Application</h4>
+          <p>Data dipublikasikan ke aplikasi mobile dan web dashboard dalam waktu <strong>&lt; 5 menit</strong> dari pengambilan sensor.</p>
+        </div>
+      </div>
+
+      <!-- Total time badge -->
+      <div style="margin-top:24px;background:linear-gradient(135deg,var(--green-600),var(--green-400));color:white;border-radius:16px;padding:20px 32px;text-align:center;box-shadow:var(--shadow-green);">
+        <div style="font-size:13px;opacity:0.85;margin-bottom:4px;">Total waktu dari sensor ke pengguna</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:800;">&lt; 5 Menit</div>
+        <div style="font-size:12px;opacity:0.75;margin-top:4px;">Real-time monitoring untuk respons cepat</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="site-footer">
+  <div class="footer-logo">🌿 COMFY</div>
+  <div style="font-size:13px;opacity:0.6;margin-bottom:16px;">Community Smart Air Monitoring for You</div>
+  <div class="footer-links">
+    <a href="#">comfy.id</a>
+    <a href="#">Tentang Kami</a>
+    <a href="#">Data API</a>
+    <a href="#">Kontak</a>
+    <a href="#">Download App</a>
+  </div>
+  <div class="footer-copy">© 2026 COMFY · Udara Bersih, Hidup Sehat, Bebas Rokok</div>
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({ top: document.querySelector('.nav-container').offsetTop - 10, behavior: 'smooth' });
+  }
+
+  // Pill interaction
+  document.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', function() {
+      this.closest('.category-pills')?.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
